@@ -97,8 +97,8 @@ runs:
       if: ${{ ! fromJSON(inputs.use-external-python) }}
       shell: bash
       run: |
-        echo ::group::Test Setup Python Negation
-        echo "TEST SETUP PYTHON NEGATION"
+        echo ::group::Test Setup Python Negation fromJSOn
+        echo "TEST SETUP PYTHON NEGATION fromJSON"
         echo "${{ inputs.use-external-python }}"
         python --version
 
