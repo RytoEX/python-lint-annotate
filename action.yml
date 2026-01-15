@@ -95,6 +95,7 @@ runs:
 
     - name: Test Setup Python
       if: ${{ ! inputs.use-external-python }}
+      shell: bash
       run: |
         echo "TEST SETUP PYTHON"
         python --version
