@@ -94,7 +94,7 @@ runs:
         cache: pip
 
     - name: Test Setup Python Negation
-      if: ${{ ! inputs.use-external-python }}
+      if: ${{ ! inputs.use-external-python == 'true' }}
       shell: bash
       run: |
         echo ::group::Test Setup Python Negation
@@ -103,7 +103,7 @@ runs:
         python --version
 
     - name: Test Setup Python
-      if: ${{ inputs.use-external-python }}
+      if: ${{ inputs.use-external-python == 'true' }}
       shell: bash
       run: |
         echo ::group::Test Setup Python
