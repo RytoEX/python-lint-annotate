@@ -97,8 +97,9 @@ runs:
       if: ${{ ! inputs.use-external-python }}
       shell: bash
       run: |
-        echo ::group::Test Setup Python
-        echo "TEST SETUP PYTHON"
+        echo ::group::Test Setup Python Negation
+        echo "TEST SETUP PYTHON NEGATION"
+        echo "${{ inputs.use-external-python }}"
         python --version
 
     - name: Test Setup Python
@@ -107,6 +108,7 @@ runs:
       run: |
         echo ::group::Test Setup Python
         echo "TEST SETUP PYTHON"
+        echo "${{ inputs.use-external-python }}"
         python --version
 
     - run: python --version
