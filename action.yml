@@ -75,7 +75,7 @@ inputs:
   python-version:
     description: "Set desired python version with this keyword"
     required: false
-    default: "3.8"
+    default: "3.10"
   use-external-python:
     description: "false (default): Install a new Python for this action; true: use the python installation in the previous steps"
     type: boolean
@@ -92,6 +92,12 @@ runs:
         python-version: ${{ inputs.python-version }}
         architecture: x64
         cache: pip
+
+    - name: Test Setup Python
+      if: ${{ ! inputs.use-external-python }}
+      run: |
+        echo "TEST SETUP PYTHON"
+        python --version
     
     - run: python --version
       shell: bash
