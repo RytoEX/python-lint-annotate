@@ -93,7 +93,7 @@ runs:
         architecture: x64
         cache: pip
 
-    - name: Test Setup Python
+    - name: Test Setup Python Negation
       if: ${{ ! inputs.use-external-python }}
       shell: bash
       run: |
