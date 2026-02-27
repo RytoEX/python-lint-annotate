@@ -1,0 +1,62 @@
+on:
+  push:
+  pull_request:
+name: Check Python Version Selection
+jobs:
+  pythoninstall:
+    name: Test Python install
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, ubuntu-24.04, ubuntu-latest, macos-14, macos-15, macos-latest, windows-2022, windows-2025, windows-latest]
+        python-version: ['3.10', '3.11', '3.12', '3.13', '3.14']
+        use-external-python: [true, false]
+        exclude:
+          - os: macos-14
+            python-version: 3.10
+          - os: macos-15
+            python-version: 3.10
+          - os: macos-latest
+            python-version: 3.10
+    env:
+      python-test-package: python-dummy
+    steps:
+    - uses: actions/checkout@v6
+
+    - name: Install Python if required
+      if: ${{ matrix.use-external-python }}
+      uses: actions/setup-python@v6
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install a test dependency if external Python is used
+      if: ${{ matrix.use-external-python }}
+      run:
+        pip install ${{ env.python-test-package }}
+
+    - name: Test Action usage
+      uses: ./
+      with:
+        python-root-list: "./tests/*.py ./tests/subtest/*.py"
+        use-black: false
+        use-isort: false
+        use-mypy: false
+        use-pycodestyle: false
+        use-pydocstyle: false
+        extra-pycodestyle-options: "--max-line-length=88"
+        use-pylint: false
+        use-flake8: false
+        use-vulture: false
+        python-version: ${{ matrix.python-version }}
+        use-external-python: ${{ matrix.use-external-python }}
+
+    - name: Test Python Version
+      id: pythonVersion
+      shell: bash
+      run: |
+        PythonVersion=$(python --version)
+        PythonVersion=${PythonVersion#Python }
+        echo $PythonVersion
+        if [[ ${PythonVersion} != ${{ matrix.python-version }}* ]]; then
+            exit 1
+        fi
